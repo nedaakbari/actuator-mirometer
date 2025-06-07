@@ -1,0 +1,21 @@
+#spring.application.name=service-core
+spring:
+  application:
+    name: observability-demo
+
+otel:
+  exporter:
+    otlp:
+      endpoint: http://localhost:7317
+#      endpoint: http://localhost:4317
+  metrics:
+    exporter: otlp
+  traces:
+    exporter: otlp
+
+management:
+  metrics:
+    export:
+      otlp:
+        enabled: true
+        step: 10s

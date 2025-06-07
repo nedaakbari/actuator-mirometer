@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>org.example</groupId>
+    <artifactId>open</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>open</name>
+    <description>open</description>
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-bom</artifactId>
+                <version>2.16.0</version>
+                <type>pom</type>
+<!--                <scope>import</scope>-->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--         هدفش اینه که با کمترین کد، tracing، metrics و logs رو خودکار فعال کنه.-->
+<!--        به‌طور خودکار tracing روی کنترلرها، RestTemplate، JDBC و ... فعال می‌کنه.-->
+<!--        نیاز به کدنویسی مستقیم برای ساخت span نداری.-->
+<!--        به درد پروژه‌هایی می‌خوره که می‌خوان سریع observability اضافه کنن.-->
+<!--        -->
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-spring-boot-starter</artifactId>
+            <version>1.22.1-alpha</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+            <version>2.16.0-alpha</version>
+            <scope>runtime</scope>
+        </dependency>
+
+<!--        از هستهٔ خود OpenTelemetry-->
+<!--        🎯 مخصوص ساخت span، context و تریس دستی (tracing)-->
+<!--        این کتابخونه:-->
+<!--        فقط برای Tracing کاربرد داره (نه متریک)-->
+<!--        شامل Tracer, Span, Context, Attributes و ...-->
+
+<!--        به شما اجازه می‌ده spanهای دستی بسازید-->
+<!--        <dependency>-->
+<!--            <groupId>io.opentelemetry</groupId>-->
+<!--            <artifactId>opentelemetry-api</artifactId>-->
+<!--            <version>1.35.0</version> &lt;!&ndash; یا نسخه‌ی سازگار با starter &ndash;&gt;-->
+<!--        </dependency>-->
+
+
+<!--        از خانوادهٔ Micrometer-->
+<!--        🎯 مخصوص ارسال متریک‌ها (metrics) به OpenTelemetry-->
+<!--        از Micrometer برای تولید و ثبت متریک‌ها استفاده می‌کنه-->
+<!--        متریک‌ها رو از Spring Boot به OpenTelemetry Collector از طریق OTLP ارسال می‌کنه-->
+<!--        نیاز نیست span یا tracer رو دستی بسازی-->
+<!--        📌 مناسب برای metrics مثل:-->
+<!--        تعداد درخواست‌ها-->
+<!--        خطاها-->
+<!--        مصرف منابع-->
+<!--        متریک‌های سفارشی مثل meterRegistry.counter("x").increment()-->
+
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-otlp</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+
+<!--        یک کتابخانه سطح پایین (Low-level API)-->
+<!--        🎯 مخصوص نوشتن instrumentation سفارشی یا ساختن auto-instrumentation library-->
+<!--        <dependency>-->
+<!--            <groupId>io.opentelemetry.instrumentation</groupId>-->
+<!--            <artifactId>opentelemetry-instrumentation-api</artifactId>-->
+<!--            <version>2.16.0</version>-->
+<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>io.micrometer</groupId>-->
+        <!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <annotationProcessorPaths>-->
+<!--                        <path>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                        </path>-->
+<!--                    </annotationProcessorPaths>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
