@@ -1,0 +1,59 @@
+{
+  "title": "Spring Boot Observability",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "HTTP Requests per Endpoint",
+      "targets": [
+        {
+          "expr": "sum by(uri) (rate(http_server_requests_seconds_count[1m]))",
+          "legendFormat": "{{uri}}",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+    },
+    {
+      "type": "graph",
+      "title": "HTTP Response Time",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[1m])) by (le, uri))",
+          "legendFormat": "{{uri}}",
+          "refId": "B"
+        }
+      ],
+      "datasource": "Prometheus",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
+    },
+    {
+      "type": "graph",
+      "title": "HTTP Response Status Codes",
+      "targets": [
+        {
+          "expr": "sum by(status) (rate(http_server_requests_seconds_count[1m]))",
+          "legendFormat": "Status {{status}}",
+          "refId": "C"
+        }
+      ],
+      "datasource": "Prometheus",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 }
+    },
+    {
+      "type": "graph",
+      "title": "Custom Metric: ping calls",
+      "targets": [
+        {
+          "expr": "rate(endpoint_ping_calls_total[1m])",
+          "legendFormat": "ping",
+          "refId": "D"
+        }
+      ],
+      "datasource": "Prometheus",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 }
+    }
+  ],
+  "schemaVersion": 16,
+  "version": 1
+}
